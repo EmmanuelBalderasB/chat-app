@@ -29,7 +29,10 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		console.log(inputValue)
+		if (inputValue.length === 0) {
+			return null
+		}
+		//console.log(inputValue)
 		// Call the setMessage function with the input value
 		setMessage(inputValue, "user")
 		setChatStarted(true)
