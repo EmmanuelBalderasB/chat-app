@@ -1,13 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, FormEvent } from "react"
 
-const TextArea: React.FC = () => {
+interface TextAreaProps {
+	// Add props here
+	setMessage: (message: string, type: string) => void
+}
+
+const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 	const placeholders: string[] = [
 		"Type your prompt",
 		"Type your prompt.",
 		"Type your prompt..",
 		"Type your prompt...",
 	]
+
 	const [placeholderIndex, setPlaceholderIndex] = useState<number>(0)
 	const [inputValue, setInputValue] = useState<string>("")
 	const placeholder: string = placeholders[placeholderIndex]
@@ -21,14 +27,16 @@ const TextArea: React.FC = () => {
 		return () => clearInterval(interval)
 	}, [])
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault() // Prevent page reload
-		console.log(inputValue) // Log the input value
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		console.log(inputValue)
+		// Call the setMessage function with the input value
+		setMessage(inputValue, "user")
 		setInputValue("") // Clear the input after submission
 	}
 
 	return (
-		<div className="flex flex-col justify-center items-center w-1/2 absolute bottom-16 left-0 right-0 mx-auto">
+		<div className="flex flex-col justify-center items-center w-1/2">
 			<label
 				htmlFor="textarea"
 				className="mb-2 font-light text-sm text-zinc-500"
