@@ -1,5 +1,5 @@
 import { useState } from "react"
-import TextArea from "./TextArea"
+import TextArea from "./Chat/TextArea"
 import ChatWindow from "./Chat/ChatWindow"
 
 function App() {

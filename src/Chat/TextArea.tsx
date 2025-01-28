@@ -17,7 +17,7 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 	const [placeholderIndex, setPlaceholderIndex] = useState<number>(0)
 	const [inputValue, setInputValue] = useState<string>("")
 	const placeholder: string = placeholders[placeholderIndex]
-
+	const [chatStarted, setChatStarted] = useState<boolean>(false)
 	useEffect(() => {
 		const interval: NodeJS.Timeout = setInterval(() => {
 			setPlaceholderIndex(
@@ -32,6 +32,7 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 		console.log(inputValue)
 		// Call the setMessage function with the input value
 		setMessage(inputValue, "user")
+		setChatStarted(true)
 		setInputValue("") // Clear the input after submission
 	}
 
@@ -41,7 +42,9 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 				htmlFor="textarea"
 				className="mb-2 font-light text-sm text-zinc-500"
 			>
-				Make sure you agree to our Terms and our Privacy Policy
+				{chatStarted
+					? null
+					: "Make sure you agree to our Terms and our Privacy Policy"}
 			</label>
 			<form onSubmit={handleSubmit} className="w-full">
 				<input
