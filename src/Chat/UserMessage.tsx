@@ -1,5 +1,4 @@
 import React from "react"
-import "./Message.css"
 
 interface MessageProps {
 	text: string
@@ -12,7 +11,7 @@ const UserMessage: React.FC<MessageProps> = ({ text, timestamp }) => {
 			<div className="message-timestamp text-sm text-zinc-500">
 				{timestamp}
 			</div>
-			<div className="max-w-32 bg-zinc-200 p-4 rounded-lg text-zinc-900">
+			<div className="max-w-32 bg-zinc-200 px-4 py-2 rounded-lg text-zinc-900">
 				<div className="message-text">{text}</div>
 			</div>
 		</div>
