@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, FormEvent } from "react"
+import getGroqChatCompletion from "../Utils/getGroqChatCompletion"
 
 interface TextAreaProps {
 	// Add props here
@@ -36,6 +37,15 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 		// Call the setMessage function with the input value
 		setMessage(inputValue, "user")
 		setChatStarted(true)
+		const llmResponse = await getGroqChatCompletion(inputValue)
+		const title = await getGroqChatCompletion(
+			"give me a title for a conversation where the user asked the following question:" +
+				inputValue +
+				"ONLY RESPOND WITH THE TITLE NAME",
+		)
+		console.log(title)
+		document.title = ("Chat App | " + title) as string
+		setMessage(llmResponse as string, "system")
 		setInputValue("") // Clear the input after submission
 	}
 
