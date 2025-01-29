@@ -1,5 +1,5 @@
 import { useState } from "react"
-import TextArea from "./Chat/TextArea"
+import PromptInput from "./Chat/PromptInput"
 import ChatWindow from "./Chat/ChatWindow"
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
 	return (
 		<div className="w-screen h-screen bg-zinc-900 flex flex-col justify-center items-center">
 			<ChatWindow messages={messages} />
-			<TextArea setMessage={setMessage} />
+			<PromptInput setMessage={setMessage} />
 		</div>
 	)
 }

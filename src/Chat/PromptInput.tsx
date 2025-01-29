@@ -3,12 +3,12 @@ import { useEffect, useState, FormEvent } from "react"
 import getGroqChatCompletion from "../Utils/getGroqChatCompletion"
 import ModelDropDown from "./ModelDropDown"
 
-interface TextAreaProps {
+interface PromptInputProps {
 	// Add props here
 	setMessage: (message: string, type: string) => void
 }
 
-const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
+const PromptInput: React.FC<PromptInputProps> = ({ setMessage }) => {
 	const placeholders: string[] = [
 		"Type your prompt",
 		"Type your prompt.",
@@ -101,4 +101,4 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 	)
 }
 
-export default TextArea
+export default PromptInput
