@@ -7,7 +7,7 @@ function App() {
 		Array<{ text: string; timestamp: string; type: string }>
 	>([])
 
-	const handleNewUserMessage = (text: string, type: string) => {
+	const setMessage = (text: string, type: string) => {
 		setMessages((prev) => [
 			...prev,
 			{
@@ -21,7 +21,7 @@ function App() {
 	return (
 		<div className="w-screen h-screen bg-zinc-900 flex flex-col justify-center items-center">
 			<ChatWindow messages={messages} />
-			<TextArea setMessage={handleNewUserMessage} />
+			<TextArea setMessage={setMessage} />
 		</div>
 	)
 }
