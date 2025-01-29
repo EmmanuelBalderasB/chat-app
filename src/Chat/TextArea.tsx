@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, FormEvent } from "react"
 import getGroqChatCompletion from "../Utils/getGroqChatCompletion"
+import ModelDropDown from "./ModelDropDown"
 
 interface TextAreaProps {
 	// Add props here
@@ -15,10 +16,22 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 		"Type your prompt...",
 	]
 
+	const models: string[] = [
+		"deepseek-r1-distill-llama-70b",
+		"distill-whisper-large-v3-en",
+		"llama-3.3-70b-versatile",
+		"llama-3.2-11b-vision-preview",
+		"llama-3.2-90b-vision-preview",
+		"mixtral-8x7b-32768",
+	]
+
 	const [placeholderIndex, setPlaceholderIndex] = useState<number>(0)
-	const [inputValue, setInputValue] = useState<string>("")
 	const placeholder: string = placeholders[placeholderIndex]
+	const [inputValue, setInputValue] = useState<string>("")
 	const [chatStarted, setChatStarted] = useState<boolean>(false)
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+	const [model, setModel] = useState<string>("deepseek-r1-distill-llama-70b")
+
 	useEffect(() => {
 		const interval: NodeJS.Timeout = setInterval(() => {
 			setPlaceholderIndex(
@@ -30,27 +43,35 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		if (inputValue.length === 0) {
+		if (inputValue.length === 0 || isSubmitting) {
 			return null
 		}
-		//console.log(inputValue)
-		// Call the setMessage function with the input value
+
+		setIsSubmitting(true)
 		setMessage(inputValue, "user")
 		setChatStarted(true)
-		const llmResponse = await getGroqChatCompletion(inputValue)
-		const title = await getGroqChatCompletion(
-			"give me a title for a conversation where the user asked the following question:" +
-				inputValue +
-				"ONLY RESPOND WITH THE TITLE NAME",
-		)
-		console.log(title)
-		document.title = ("Chat App | " + title) as string
-		setMessage(llmResponse as string, "system")
-		setInputValue("") // Clear the input after submission
+
+		try {
+			const llmResponse = await getGroqChatCompletion(inputValue, model)
+			const title = await getGroqChatCompletion(
+				"give me a title for a conversation where the user asked the following question:" +
+					inputValue +
+					"ONLY RESPOND WITH THE TITLE NAME",
+				model,
+			)
+			console.log(title)
+			document.title = ("Chat App | " + title) as string
+			setMessage(llmResponse as string, "system")
+		} catch (error) {
+			console.error("Error getting chat completion:", error)
+		} finally {
+			setInputValue("") // Clear the input after submission
+			setIsSubmitting(false)
+		}
 	}
 
 	return (
-		<div className="flex flex-col justify-center items-center w-1/2">
+		<div className="flex flex-col justify-center items-center w-1/2 border-1 border-zinc-700 bg-zinc-800 px-4 py-3 rounded-xl text-gray-200">
 			<label
 				htmlFor="textarea"
 				className="mb-2 font-light text-sm text-zinc-500"
@@ -64,10 +85,18 @@ const TextArea: React.FC<TextAreaProps> = ({ setMessage }) => {
 					name="textarea"
 					value={inputValue}
 					onChange={(e) => setInputValue(e.target.value)}
-					className="border-1 border-zinc-700 bg-zinc-800 px-2 py-4 w-full rounded-xl text-gray-200 resize-none outline-none overflow-y-visible"
+					className="py-2 px-2 w-full resize-none outline-none overflow-y-visible  disabled:text-zinc-600 disabled:cursor-not-allowed"
 					placeholder={placeholder}
+					disabled={isSubmitting}
 				/>
 			</form>
+			<div className="flex flex-row justify-center items-center w-fit hover:cursor-pointer self-end text-zinc-400 outline-none active:outline-none focus:outline-none">
+				<ModelDropDown
+					models={models}
+					selectedModel={model}
+					setSelectedModel={setModel}
+				/>
+			</div>
 		</div>
 	)
 }

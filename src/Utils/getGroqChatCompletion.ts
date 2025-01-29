@@ -1,12 +1,14 @@
 import { Groq } from "groq-sdk"
 
 const groq = new Groq({
-	apiKey: process.env.GROQ_API_KEY,
+	apiKey: process.env.GROQ_API_KEY, // Your API key
 	dangerouslyAllowBrowser: true,
 })
-const llm = "llama-3.3-70b-versatile"
 
-const getGroqChatCompletion = async (prompt: string): Promise<unknown> => {
+const getGroqChatCompletion = async (
+	prompt: string,
+	modelSelected: string,
+): Promise<unknown> => {
 	try {
 		const response = await groq.chat.completions.create({
 			messages: [
@@ -15,7 +17,7 @@ const getGroqChatCompletion = async (prompt: string): Promise<unknown> => {
 					content: prompt,
 				},
 			],
-			model: llm,
+			model: modelSelected,
 		})
 		return response.choices[0].message.content
 	} catch (error) {
