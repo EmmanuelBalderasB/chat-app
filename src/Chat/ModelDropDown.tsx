@@ -1,11 +1,3 @@
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "../Components/Select"
-
 interface ModelDropDownProps {
 	models: Array<string>
 	selectedModel: string
@@ -17,23 +9,18 @@ const ModelDropDown: React.FC<ModelDropDownProps> = ({
 	selectedModel,
 	setSelectedModel,
 }) => {
+	console.log(models)
 	return (
-		<Select>
-			<SelectTrigger>
-				<SelectValue>{selectedModel}</SelectValue>
-			</SelectTrigger>
-			<SelectContent>
-				{models.map((model, i) => (
-					<SelectItem
-						key={i}
-						value={model}
-						onClick={() => setSelectedModel(model)}
-					>
-						{model}
-					</SelectItem>
-				))}
-			</SelectContent>
-		</Select>
+		<select
+			value={selectedModel}
+			onChange={(e) => setSelectedModel(e.target.value)}
+		>
+			{models.map((model: string, i: number) => (
+				<option key={i} value={model}>
+					{model}
+				</option>
+			))}
+		</select>
 	)
 }
 
