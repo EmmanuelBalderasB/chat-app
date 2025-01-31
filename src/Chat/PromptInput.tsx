@@ -15,6 +15,9 @@ interface PromptInputProps {
 	setStreamMessage: (message: string) => void
 	isLoading: boolean
 	setIsLoading: (isLoading: boolean) => void
+	models: string[]
+	model: string
+	setModel: (model: string) => void
 }
 
 const PromptInput: React.FC<PromptInputProps> = ({
@@ -24,6 +27,9 @@ const PromptInput: React.FC<PromptInputProps> = ({
 	setStreamMessage,
 	isLoading,
 	setIsLoading,
+	models,
+	model,
+	setModel,
 }) => {
 	const placeholders: string[] = [
 		"Type your prompt",
@@ -32,20 +38,10 @@ const PromptInput: React.FC<PromptInputProps> = ({
 		"Type your prompt...",
 	]
 
-	const models: string[] = [
-		"deepseek-r1-distill-llama-70b",
-		"distill-whisper-large-v3-en",
-		"llama-3.3-70b-versatile",
-		"llama-3.2-11b-vision-preview",
-		"llama-3.2-90b-vision-preview",
-		"mixtral-8x7b-32768",
-	]
-
 	const [placeholderIndex, setPlaceholderIndex] = useState<number>(0)
 	const placeholder: string = placeholders[placeholderIndex]
 	const [inputValue, setInputValue] = useState<string>("")
 	const [chatStarted, setChatStarted] = useState<boolean>(false)
-	const [model, setModel] = useState<string>("deepseek-r1-distill-llama-70b")
 
 	useEffect(() => {
 		const interval: NodeJS.Timeout = setInterval(() => {
