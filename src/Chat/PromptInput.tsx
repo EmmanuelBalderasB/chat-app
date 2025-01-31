@@ -12,12 +12,18 @@ interface PromptInputProps {
 	setChatHistory: (
 		chatHistory: Array<{ role: string; content: string }>,
 	) => void
+	setStreamMessage: (message: string) => void
+	isLoading: boolean
+	setIsLoading: (isLoading: boolean) => void
 }
 
 const PromptInput: React.FC<PromptInputProps> = ({
 	setMessage,
 	chatHistory,
 	setChatHistory,
+	setStreamMessage,
+	isLoading,
+	setIsLoading,
 }) => {
 	const placeholders: string[] = [
 		"Type your prompt",
@@ -39,7 +45,6 @@ const PromptInput: React.FC<PromptInputProps> = ({
 	const placeholder: string = placeholders[placeholderIndex]
 	const [inputValue, setInputValue] = useState<string>("")
 	const [chatStarted, setChatStarted] = useState<boolean>(false)
-	const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 	const [model, setModel] = useState<string>("deepseek-r1-distill-llama-70b")
 
 	useEffect(() => {
@@ -53,21 +58,28 @@ const PromptInput: React.FC<PromptInputProps> = ({
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		if (inputValue.length === 0 || isSubmitting) {
+		if (inputValue.length === 0 || isLoading) {
 			return null
 		}
 
-		setIsSubmitting(true)
+		setIsLoading(true)
 		setMessage(inputValue, "user")
 		setChatStarted(true)
 
 		try {
-			const llmResponse = await getGroqChatCompletion(inputValue, model)
+			// Get the title of the conversation
 			const title = await getGroqChatCompletion(
 				"give me a title for a conversation where the user asked the following question:" +
 					inputValue +
 					"ONLY RESPOND WITH THE TITLE NAME",
 				"llama-3.3-70b-versatile",
+			)
+
+			// Get the response from the model
+			const llmResponse = await getGroqChatCompletion(
+				inputValue,
+				model,
+				setStreamMessage,
 			)
 			//console.log(title)
 			document.title = ("Chat App | " + title) as string
@@ -78,10 +90,14 @@ const PromptInput: React.FC<PromptInputProps> = ({
 				{ role: "system", content: llmResponse as string },
 			])
 		} catch (error) {
+			setInputValue("")
+			setStreamMessage("")
+			setIsLoading(false)
 			console.error("Error getting chat completion:", error)
 		} finally {
 			setInputValue("") // Clear the input after submission
-			setIsSubmitting(false)
+			setStreamMessage("")
+			setIsLoading(false)
 		}
 	}
 
@@ -102,7 +118,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 					onChange={(e) => setInputValue(e.target.value)}
 					className="py-2 px-2 w-full resize-none outline-none overflow-y-visible  disabled:text-zinc-600 disabled:cursor-not-allowed"
 					placeholder={placeholder}
-					disabled={isSubmitting}
+					disabled={isLoading}
 				/>
 			</form>
 			<div className="flex flex-row justify-center items-center w-fit hover:cursor-pointer self-end text-zinc-400 outline-none active:outline-none focus:outline-none">
