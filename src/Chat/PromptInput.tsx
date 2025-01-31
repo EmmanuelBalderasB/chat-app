@@ -4,11 +4,21 @@ import getGroqChatCompletion from "../Utils/getGroqChatCompletion"
 import ModelDropDown from "./ModelDropDown"
 
 interface PromptInputProps {
-	// Add props here
+	// Function to set the message in the chat window
 	setMessage: (message: string, type: string) => void
+
+	// Chat history state and setter
+	chatHistory: Array<{ role: string; content: string }>
+	setChatHistory: (
+		chatHistory: Array<{ role: string; content: string }>,
+	) => void
 }
 
-const PromptInput: React.FC<PromptInputProps> = ({ setMessage }) => {
+const PromptInput: React.FC<PromptInputProps> = ({
+	setMessage,
+	chatHistory,
+	setChatHistory,
+}) => {
 	const placeholders: string[] = [
 		"Type your prompt",
 		"Type your prompt.",
@@ -62,6 +72,11 @@ const PromptInput: React.FC<PromptInputProps> = ({ setMessage }) => {
 			console.log(title)
 			document.title = ("Chat App | " + title) as string
 			setMessage(llmResponse as string, "system")
+			setChatHistory([
+				...chatHistory,
+				{ role: "user", content: inputValue },
+				{ role: "system", content: llmResponse as string },
+			])
 		} catch (error) {
 			console.error("Error getting chat completion:", error)
 		} finally {
