@@ -67,7 +67,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 				"give me a title for a conversation where the user asked the following question:" +
 					inputValue +
 					"ONLY RESPOND WITH THE TITLE NAME",
-				model,
+				"llama-3.3-70b-versatile",
 			)
 			//console.log(title)
 			document.title = ("Chat App | " + title) as string
