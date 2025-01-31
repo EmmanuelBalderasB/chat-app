@@ -56,6 +56,12 @@ const PromptInput: React.FC<PromptInputProps> = ({
 		return () => clearInterval(interval)
 	}, [])
 
+	useEffect(() => {
+		if (chatHistory.length > 0) {
+			setChatHistory([])
+		}
+	}, [model])
+
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		if (inputValue.length === 0 || isLoading) {
@@ -80,6 +86,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 				inputValue,
 				model,
 				setStreamMessage,
+				chatHistory,
 			)
 			//console.log(title)
 			document.title = ("Chat App | " + title) as string

@@ -1,4 +1,5 @@
 import { Groq } from "groq-sdk"
+import systemPrompt from "./systemPrompt"
 
 // Define interfaces
 interface ChatMessage {
@@ -26,10 +27,15 @@ const getGroqChatCompletion = async (
 	prompt: string,
 	modelSelected: string,
 	setStreamMessage?: (message: string) => void,
+	chatHistory?: Array<{ role: string; content: string }>,
 ): Promise<string> => {
 	try {
 		const response = await groq.chat.completions.create({
 			messages: [
+				{
+					role: "system",
+					content: systemPrompt + JSON.stringify(chatHistory),
+				},
 				{
 					role: "user",
 					content: prompt,
@@ -38,7 +44,7 @@ const getGroqChatCompletion = async (
 			model: modelSelected,
 			stream: true,
 		})
-
+		console.log(systemPrompt + JSON.stringify(chatHistory))
 		let fullResponse: string = ""
 
 		for await (const chunk of response as AsyncIterable<StreamChunk>) {
