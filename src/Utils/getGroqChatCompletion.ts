@@ -47,7 +47,7 @@ const getGroqChatCompletion = async (
 				fullResponse += content
 				setStreamMessage?.(fullResponse)
 			}
-			console.log(chunk)
+			//console.log(chunk)
 		}
 		return fullResponse
 	} catch (error) {
