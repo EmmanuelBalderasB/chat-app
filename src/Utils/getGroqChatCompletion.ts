@@ -18,8 +18,19 @@ const getGroqChatCompletion = async (
 				},
 			],
 			model: modelSelected,
+			stream: true,
 		})
-		return response.choices[0].message.content
+
+		let fullResponse: string = ""
+
+		for await (const chunk of response) {
+			const content: string = chunk.choices[0].delta.content ?? ""
+			if (content) {
+				fullResponse += content
+			}
+			console.log(chunk)
+		}
+		return fullResponse
 	} catch (error) {
 		console.error("Error fetching chat completion:", error)
 		throw error
