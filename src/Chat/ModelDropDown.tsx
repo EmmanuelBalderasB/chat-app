@@ -9,7 +9,7 @@ const ModelDropDown: React.FC<ModelDropDownProps> = ({
 	selectedModel,
 	setSelectedModel,
 }) => {
-	console.log(models)
+	//console.log(models)
 	return (
 		<select
 			value={selectedModel}

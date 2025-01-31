@@ -4,7 +4,7 @@ interface SystemMessageProps {
 }
 
 const SystemMessage: React.FC<SystemMessageProps> = ({ text, timestamp }) => {
-	console.log(text, timestamp)
+	//console.log(text, timestamp)
 	return (
 		<div className="message-container flex flex-col items-start mb-3">
 			<div className="message-timestamp text-sm text-zinc-500">

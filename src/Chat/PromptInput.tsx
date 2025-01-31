@@ -69,7 +69,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 					"ONLY RESPOND WITH THE TITLE NAME",
 				model,
 			)
-			console.log(title)
+			//console.log(title)
 			document.title = ("Chat App | " + title) as string
 			setMessage(llmResponse as string, "system")
 			setChatHistory([
