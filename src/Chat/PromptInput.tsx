@@ -74,7 +74,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 				"give me a title for a conversation where the user asked the following question:" +
 					inputValue +
 					"ONLY RESPOND WITH THE TITLE NAME",
-				"llama-3.3-70b-versatile",
+				"llama-3.1-8b-instant",
 			)
 
 			// Get the response from the model
@@ -105,7 +105,7 @@ const PromptInput: React.FC<PromptInputProps> = ({
 	}
 
 	return (
-		<div className="flex flex-col justify-center items-center w-1/2 border-1 border-zinc-700 bg-zinc-800 px-4 py-3 rounded-xl text-gray-200">
+		<div className="flex flex-col justify-center items-center w-1/2 border border-zinc-700 bg-zinc-800 px-4 py-3 rounded-xl text-gray-200">
 			<label
 				htmlFor="textarea"
 				className="mb-2 font-light text-sm text-zinc-500"

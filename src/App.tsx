@@ -4,14 +4,15 @@ import ChatWindow from "./Chat/ChatWindow"
 
 function App() {
 	const models: string[] = [
-		"deepseek-r1-distill-llama-70b",
-		"distill-whisper-large-v3-en",
+		"qwen/qwen3-32b",
+		"openai/gpt-oss-20b",
 		"llama-3.3-70b-versatile",
-		"llama-3.2-11b-vision-preview",
-		"llama-3.2-90b-vision-preview",
-		"mixtral-8x7b-32768",
+		"llama-3.1-8b-instant",
+		"meta-llama/llama-4-maverick-17b-128e-instruct",
+		"openai/gpt-oss-120b",
+		"groq/compound",
 	]
-	const [model, setModel] = useState<string>("deepseek-r1-distill-llama-70b")
+	const [model, setModel] = useState<string>("llama-3.3-70b-versatile")
 	const [messages, setMessages] = useState<
 		Array<{ text: string; timestamp: string; type: string }>
 	>([])
